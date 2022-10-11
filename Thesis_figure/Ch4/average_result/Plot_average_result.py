@@ -16,9 +16,9 @@ warnings.filterwarnings("ignore")
 # In[2]:
 
 
-STApath = '/Users/tong/Documents/99_temp/Research/DataBase/01_Armenia/Station_info_2.csv'
+STApath = '/Volumes/home/Research/DataBase/01_Armenia/Station_info_2.csv'
 dS = pd.read_csv(STApath)
-path    = '/Users/tong/Documents/99_temp/Research/STEP/05_Station_result_statistics-220916/Station_SK(K)S_2010-2020average_v5.csv'
+path    = 'Station_SK(K)S_2010-2020average_v7.csv'
 
 df = pd.read_csv(path)
 
@@ -28,9 +28,9 @@ df = pd.read_csv(path)
 
 def PygmtBegin(figmap, region, title):
     figmap.basemap(region=region, projection="M15c", frame = ['x1f0.5', 'y1f0.5', f'nSeW+t"{title}"'])
-    figmap.grdimage('@earth_relief_15s',region =region, cmap="/Users/tong/Documents/99_temp/Research/Python/eleva.cpt",monochrome=True, shading=True, transparency=60)
+    figmap.grdimage('@earth_relief_15s',region =region, cmap="/Volumes/home/Research/Python/eleva.cpt",monochrome=True, shading=True, transparency=60)
     figmap.coast(resolution = 'h', shorelines ='1/thinnest,black', water='white', borders = '1/0.25p')
-    Volcano = '/Users/tong/Documents/99_temp/Research/DataBase/01_Armenia/02_Volcano_list.csv'
+    Volcano = '/Volumes/home/Research/DataBase/01_Armenia/02_Volcano_list.csv'
     dv = pd.read_csv(Volcano)
     dv_ = dv[dv['Plottype']==1]
     figmap.plot(x=dv_['lon'],y=dv_['lat'],style="kvolcano/0.4c", pen='0.1p,black', color="black")
@@ -60,12 +60,11 @@ def PygmtBegin(figmap, region, title):
 # pygmt.makecpt(cmap='panoply',series=[-32,32,8],continuous=True, output='relative_ref46_.cpt')
 
 
-# In[7]:
 
 
 regvals = [41, 47, 39.5, 44.2] ###Zoom in 
 figmap = pygmt.Figure()
-method = 'RC'
+method = 'SC'
 
 PygmtBegin(figmap, regvals, method)
 
@@ -118,8 +117,8 @@ for ss in range(len(dS)):
         else:
             figmap.text(x=st_lon,y=st_lat-0.1,text=STA, font="8p,Times-Bold,black",fill='white',transparency=30)
 
-figmap.savefig(f'average_{method}_v3.pdf')
-figmap.savefig(f'average_{method}_v3.png',dpi=200)         
+figmap.savefig(f'average_{method}_v4.pdf')
+figmap.savefig(f'average_{method}_v4.png',dpi=200)         
 figmap.show()
 
 
