@@ -17,9 +17,9 @@ warnings.filterwarnings("ignore")
 
 
 
-STApath = '/Users/tong/Documents/99_temp/Research/DataBase/01_Armenia/Station_info_2.csv'
+STApath = '/Volumes/home/Research/DataBase/01_Armenia/Station_info_2.csv'
 dS = pd.read_csv(STApath)
-path    = '/Users/tong/Documents/99_temp/Research/STEP/14_result_removeD-220913'
+path    = '/Volumes/home/Research/STEP/02_Station_result_csv'
 bazcsv = 'baz.csv'
 dB = pd.read_csv(bazcsv)
 
@@ -33,10 +33,10 @@ std = 16.8
 
 def PygmtBegin(figmap, region, title):
     figmap.basemap(region=region, projection="M15c", frame = ['x1f0.5', 'y1f0.5', f'nSeW+t"{title}"'])
-    figmap.grdimage('@earth_relief_15s',region =region, cmap="/Users/tong/Documents/99_temp/Research/Python/eleva.cpt",monochrome=True, shading=True, transparency=60)
+    figmap.grdimage('@earth_relief_15s',region =region, cmap="/Volumes/home/Research/Python/eleva.cpt",monochrome=True, shading=True, transparency=60)
     figmap.coast(resolution = 'h', shorelines ='1/thinnest,black', water='white', borders = '1/0.25p')
 #     figmap.plot(data=smooth_fault,pen='1p,brown')
-    Volcano = '/Users/tong/Documents/99_temp/Research/DataBase/01_Armenia/02_Volcano_list.csv'
+    Volcano = '/Volumes/home/Research/DataBase/01_Armenia/02_Volcano_list.csv'
     dv = pd.read_csv(Volcano)
     dv_ = dv[dv['Plottype']==1]
     figmap.plot(x=dv_['lon'],y=dv_['lat'],style="kvolcano/0.4c", pen='0.1p,black', color="black")
@@ -47,13 +47,14 @@ def PygmtBegin(figmap, region, title):
 # In[5]:
 
 
-da = pd.read_csv('/Users/tong/Documents/99_temp/Research/STEP/05_Station_result_statistics-220916/Station_SK(K)S_2010-2020average_v5.csv')
+da = pd.read_csv('/Volumes/home/Research/STEP/05_Station_result_statistics/Station_SK(K)S_2010-2020average_v7.csv')
+
 Nodatasta=[]
 NULLsta=[]
 for a in range(len(da)):
     nonNull = da['nonNull'].values[a]
     Null = da['Null'].values[a]
-    Station = (da['Station'].values[a]).rsplit('.')[-1]
+    Station = str(da['Station'].values[a]).rsplit('.')[-1]
     
     if nonNull == 0 and Null<=3:
         Nodatasta.append(Station)
@@ -66,10 +67,10 @@ for a in range(len(da)):
 
 
 #=================Lesser
-STAlist = ['KIV','ONI','URAV','AMBR','TKBL','GUDA','GUDG','DDFL','LGD','CHVG','KHVA','ZKT']
-
-region = [41.5,47,41,44.5]
-filename = f'Null_result_GC'
+# STAlist = ['KIV','ONI','URAV','AMBR','TKBL','GUDA','GUDG','DDFL','LGD','CHVG','KHVA','ZKT']
+#
+# region = [41.5,47,41,44.5]
+# filename = f'Null_result_GC'
 
 #=================Lesser
 # STAlist = ['BATM','BCA','ABST','BKRG','BURN','BRNG','AZMN','AKH','GANZ','BGD','KANZ','SEAG','DMNI','KZRT','TBLG','DGRG','TRLT','TRLG']
@@ -78,12 +79,12 @@ filename = f'Null_result_GC'
 # filename = f'Null_result_LC'
 
 #=================AM
-# STAlist = ['BAUR','ARZA','TSAP','LICH','ALAV','ZARN','NAVR',
-#            'BYUR','GERK','KECH','VAND','MAGY','SHEN','GANJ',
-#            'QZX','TASB','GNI']
-#
-# region = [43,46.7,39.5,41.5]
-# filename = f'Null_result_AM'
+STAlist = ['BAUR','ARZA','TSAP','LICH','ALAV','ZARN','NAVR',
+           'BYUR','GERK','KECH','VAND','MAGY','SHEN','GANJ',
+           'QZX','TASB','GNI']
+
+region = [43,46.7,39.5,41.5]
+filename = f'Null_result_AM'
 
 
 # In[26]:
@@ -101,7 +102,7 @@ for i in range(len(dS)):
     if sta in STAlist: 
         stlat = dS['lat'].values[i]
         stlon = dS['lon'].values[i]
-        for resultpath in sorted(glob.glob(f'{path}/2010-2020_*_classify/*{sta}*result_v2.csv')):
+        for resultpath in sorted(glob.glob(f'{path}/2010-2020_*_classify_220913/*{sta}*result_v2.csv')):
             df = pd.read_csv(resultpath)
             dff = df[df['Null']==True][df['Pick']==True]
             
@@ -126,8 +127,8 @@ for i in range(len(dS)):
         else:
             figmap.text(x=stlon,y=stlat-0.1,text=sta, font="8p,Times-Bold,black",fill='white',transparency=30)
 figmap.show()
-figmap.savefig(f'{filename}_v3.png',dpi=200)
-figmap.savefig(f'{filename}_v3.pdf',dpi=200)
+figmap.savefig(f'{filename}_v4.png',dpi=200)
+figmap.savefig(f'{filename}_v4.pdf',dpi=200)
 
 
 

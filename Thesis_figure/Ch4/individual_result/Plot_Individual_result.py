@@ -16,9 +16,9 @@ warnings.filterwarnings("ignore")
 # In[2]:
 
 
-STApath = '/Users/tong/Documents/99_temp/Research/DataBase/01_Armenia/Station_info_2.csv'
+STApath = '/Volumes/home/Research/DataBase/01_Armenia/Station_info_2.csv'
 dS = pd.read_csv(STApath)
-path    = '/Users/tong/Documents/99_temp/Research/STEP/14_result_removeD-220913'
+path    = '/Volumes/home/Research/STEP/02_Station_result_csv'
 
 
 method = 'SC'
@@ -47,10 +47,10 @@ def angle_mean(dt, phi, ddt, dphi):
 
 def PygmtBegin(figmap, region, title):
     figmap.basemap(region=region, projection="M15c", frame = ['x1f0.5', 'y1f0.5', f'nSeW+t"{title}"'])
-    figmap.grdimage('@earth_relief_15s',region =region, cmap="/Users/tong/Documents/99_temp/Research/Python/eleva.cpt",monochrome=True, shading=True, transparency=60)
+    figmap.grdimage('@earth_relief_15s',region =region, cmap="/Volumes/home/Research/Python/eleva.cpt",monochrome=True, shading=True, transparency=60)
     figmap.coast(resolution = 'h', shorelines ='1/thinnest,black', water='white', borders = '1/0.25p')
 #     figmap.plot(data=smooth_fault,pen='1p,brown')
-    Volcano = '/Users/tong/Documents/99_temp/Research/DataBase/01_Armenia/02_Volcano_list.csv'
+    Volcano = '/Volumes/home/Research/DataBase/01_Armenia/02_Volcano_list.csv'
     dv = pd.read_csv(Volcano)
     dv_ = dv[dv['Plottype']==1]
     figmap.plot(x=dv_['lon'],y=dv_['lat'],style="kvolcano/0.4c", pen='0.1p,black', color="black")
@@ -75,7 +75,7 @@ def PygmtBegin(figmap, region, title):
 # In[5]:
 
 
-da = pd.read_csv('/Users/tong/Documents/99_temp/Research/STEP/05_Station_result_statistics-220916/Station_SK(K)S_2010-2020average_v5.csv')
+da = pd.read_csv('/Volumes/home/Research/STEP/05_Station_result_statistics-220916/Station_SK(K)S_2010-2020average_v7.csv')
 Nodatasta=[]
 NULLsta=[]
 for a in range(len(da)-1):
@@ -94,11 +94,11 @@ for a in range(len(da)-1):
 
 
 # #=================Greater
-STAlist = ['KIV','ONI','URAV','AMBR','TKBL','GUDA','GUDG','DDFL','LGD','CHVG','KHVA','ZKT']
-
-region = [41.5,47,41,44.5]
-filename = f'Individual_result_GC'
-xshift='11.5c'; yshift = '9.5c'
+# STAlist = ['KIV','ONI','URAV','AMBR','TKBL','GUDA','GUDG','DDFL','LGD','CHVG','KHVA','ZKT']
+#
+# region = [41.5,47,41,44.5]
+# filename = f'Individual_result_GC'
+# xshift='11.5c'; yshift = '9.5c'
 #=================Lesser
 # STAlist = ['BATM','BCA','ABST','BKRG','BURN','BRNG','AZMN','AKH','GANZ','BGD','KANZ','SEAG','DMNI','KZRT','TBLG','DGRG','TRLT','TRLG']
 #
@@ -106,13 +106,13 @@ xshift='11.5c'; yshift = '9.5c'
 # filename = f'Individual_result_LC'
 # xshift='-1c'; yshift = '3.6c'
 # #=================AM
-# STAlist = ['BAUR','ARZA','TSAP','LICH','ALAV','ZARN','NAVR',
-#            'BYUR','GERK','KECH','VAND','MAGY','SHEN','GANJ',
-#            'QZX','TASB','GNI']
-#
-# region = [43,46.7,39.5,41.5]
-# filename = f'Individual_result_AM'
-# xshift='11.5c'; yshift = '7c'
+STAlist = ['BAUR','ARZA','TSAP','LICH','ALAV','ZARN','NAVR',
+           'BYUR','GERK','KECH','VAND','MAGY','SHEN','GANJ',
+           'QZX','TASB','GNI']
+
+region = [43,46.7,39.5,41.5]
+filename = f'Individual_result_AM'
+xshift='11.5c'; yshift = '7c'
 
 # In[14]:
 
@@ -141,11 +141,12 @@ for i in range(len(dS)):
     if sta in STAlist: 
         stlat = dS['lat'].values[i]
         stlon = dS['lon'].values[i]
-        for resultpath in sorted(glob.glob(f'{path}/2010-2020_*_classify/*{sta}*result_v2.csv')):
+        for resultpath in sorted(glob.glob(f'{path}/2010-2020_*_classify_220913/*{sta}*result_v2.csv')):
+            print(resultpath)
             df = pd.read_csv(resultpath)
             dff = df[df['Null']==False][df['Quality']!='Poor'][df['Pick']==True]
             dff = dff.sort_values(by=['SCdt'],ascending=False)
-            roseplot = pd.concat([dff,roseplot])
+            roseplot = pd.concat([dff,roseplot],axis=0,ignore_index = True)
             for i in range(len(dff)):
                 event = dff['Event'].values[i]
                 evlat = dff['Ev_lat'].values[i]
@@ -173,6 +174,9 @@ for i in range(len(dS)):
             figmap.text(x=stlon,y=stlat-0.2,text=sta, font="8p,Times-Bold,black",fill='white',transparency=30)
         else:
             figmap.text(x=stlon,y=stlat-0.1,text=sta, font="8p,Times-Bold,black",fill='white',transparency=30)
+print('==============SC=============')
+phase, dphase, radius, dradius = angle_mean(roseplot['SCdt'], roseplot['SCPhi'], roseplot['SCdt_std'], roseplot['SCPhi_std'])
+
 
 length = roseplot['SCdt'].append(roseplot['SCdt'])
 azimuth = roseplot['SCPhi'].append(roseplot['SCPhi']+180)
@@ -180,12 +184,10 @@ figmap.rose(length = length, azimuth=azimuth,
             region=[0, 1, 0, 360],diameter="5c", sector="10",
             norm=True,color="red3",frame=['x1g0.5',"y30g30", "+gwhite"],
             pen="1p",xshift=xshift, yshift = yshift,labels = '-,E,-,N',no_scale = True)
-print('==============SC=============')
-phase, dphase, radius, dradius = angle_mean(roseplot['SCdt'], roseplot['SCPhi'], roseplot['SCdt_std'], roseplot['SCPhi_std'])
 
 figmap.show()    
-figmap.savefig(f'{filename}_{method}_v4.png',dpi=200)
-figmap.savefig(f'{filename}_{method}_v4.pdf',dpi=200)
+figmap.savefig(f'{filename}_{method}_v5.png',dpi=200)
+figmap.savefig(f'{filename}_{method}_v5.pdf',dpi=200)
 
 
 
@@ -215,11 +217,11 @@ for i in range(len(dS)):
     if sta in STAlist:
         stlat = dS['lat'].values[i]
         stlon = dS['lon'].values[i]
-        for resultpath in sorted(glob.glob(f'{path}/2010-2020_*_classify/*{sta}*result_v2.csv')):
+        for resultpath in sorted(glob.glob(f'{path}/2010-2020_*_classify_220913/*{sta}*result_v2.csv')):
             df = pd.read_csv(resultpath)
             dff = df[df['Null']==False][df['Quality']!='Poor'][df['Pick']==True]
             dff = dff.sort_values(by=['SCdt'],ascending=False)
-            roseplot = pd.concat([dff,roseplot])
+            roseplot = pd.concat([dff,roseplot],axis=0,ignore_index = True)
             for i in range(len(dff)):
                 event = dff['Event'].values[i]
                 evlat = dff['Ev_lat'].values[i]
@@ -247,6 +249,12 @@ for i in range(len(dS)):
             figmap.text(x=stlon,y=stlat-0.2,text=sta, font="8p,Times-Bold,black",fill='white',transparency=30)
         else:
             figmap.text(x=stlon,y=stlat-0.1,text=sta, font="8p,Times-Bold,black",fill='white',transparency=30)
+            
+
+print('==============RC=============')
+phase, dphase, radius, dradius = angle_mean(roseplot['RCdt'], roseplot['RCPhi'], roseplot['RCdt_std'], roseplot['RCPhi_std'])
+
+
 
 length = roseplot['RCdt'].append(roseplot['RCdt'])
 azimuth = roseplot['RCPhi'].append(roseplot['RCPhi']+180)
@@ -254,11 +262,8 @@ figmap.rose(length = length, azimuth=azimuth,
             region=[0, 1, 0, 360],diameter="5c", sector="10",
             norm=True,color="dodgerblue",frame=['x1g0.5',"y30g30", "+gwhite"],
             pen="1p",xshift=xshift, yshift = yshift,labels = '-,E,-,N',no_scale = True)
-print('==============RC=============')
-phase, dphase, radius, dradius = angle_mean(roseplot['RCdt'], roseplot['RCPhi'], roseplot['RCdt_std'], roseplot['RCPhi_std'])
-
 
 figmap.show()
-figmap.savefig(f'{filename}_{method}_v4.png',dpi=200)
-figmap.savefig(f'{filename}_{method}_v4.pdf',dpi=200)
+figmap.savefig(f'{filename}_{method}_v5.png',dpi=200)
+figmap.savefig(f'{filename}_{method}_v5.pdf',dpi=200)
 #
