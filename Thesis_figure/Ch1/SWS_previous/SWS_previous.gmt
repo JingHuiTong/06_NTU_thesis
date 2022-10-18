@@ -1,0 +1,68 @@
+#!/bin/csh
+set grd=SKSmap.grd
+set int=SKSmap.int
+set region=30/62/15/45
+set datapath=/Volumes/home/Research/DataBase/02_SKS_splitting
+set SWSdt=2000
+gmt begin SKSmap pdf A+m1c
+gmt set FORMAT_GEO_MAP ddd.x
+gmt set FONT_LABEL 12p,4,black
+gmt set FONT_TITLE 18p,26,black
+
+
+gmt makecpt -Celevation -T0/4000/500 -D -Z 
+gmt basemap -JM7.5i -R$region -Ba4f2 -BWNse -X+2 -Y+3 
+# gmt grdcut @earth_relief_30s -G$grd -R$region
+gmt grdimage $grd -I+d  -t50  -M 
+gmt grdgradient $grd -A0/90 -G$int -Ne0.2
+gmt coast -W1p -Dh -A150  -EAM,TR,IR,GE,RU,IQ,AZ,KZ,UZ,SY,JO+p0.3p,black  -S145/200/255 -t50
+
+
+set NWIran=$datapath/Arvin_etal_NW_Iran.txt
+set color_NWIran=springgreen
+cat $NWIran | awk 'NR>1 {print $3,$4,$5,$6*50,5}' | gmt plot -SJ -W0.05p,black -G$color_NWIran
+
+set NEIran=$datapath/Gao_etal_NEIran.txt
+set color_NEIran=springgreen4
+cat $NEIran | awk 'NR>1 {print $2,$3,$4,$8*50,5}' | gmt plot -SJ -W0.05p,black -G$color_NEIran
+
+set Arabian=$datapath/Qaysi_ArabianPlate/SRL_2018144_esupp_Table_S1.csv
+set color_Arabian=black
+cat $Arabian | awk '{print $5,$4,$6,$8*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Arabian
+
+set Kaviani2021=$datapath/Kaviani_etal_Zargos_2021.csv
+set color_Kaviani2021=skyblue
+cat $Kaviani2021 | awk -F, 'NR>1 {if ($13 != "Null") print $3,$2,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kaviani2021
+
+set Merry_Turkey=$datapath/Merry_etal_Turkey_2021.txt
+set color_Merry_Turkey=darkorchid1
+cat $Merry_Turkey | awk 'NR>1 {print $3,$4,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Merry_Turkey
+
+
+set Lemnifi_Turkey=$datapath/Lemnifi_etal_Turkey_SWS_individual_data_out.txt
+set color_Lemnifi_Turkey=red
+cat $Lemnifi_Turkey | awk 'NR>1 {print $5,$4,$6,$8*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Lemnifi_Turkey
+
+set Kavianideadsea=$datapath/Kaviani_etal_dead_sea_fault_desert.csv
+set color_Kavianideadsea=orange
+cat $Kavianideadsea | awk -F, 'NR>1 {if ($13 != "Null") print $3,$2,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kavianideadsea
+
+set Kavianideadsea_=$datapath/Kaviani_etal_dead_sea_fault_desire.csv
+set color_Kavianideadsea_=lightcoral
+cat $Kavianideadsea_ | awk -F, 'NR>1 {if ($13 != "Null") print $3,$2,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kavianideadsea_
+
+set Kavianiisn=$datapath/Kaviani_etal_dead_sea_fault_isn.csv
+set color_Kavianiisn=pink
+cat $Kavianiisn | awk -F, 'NR>1 {if ($13 != "Null") print $3,$2,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kavianiisn
+
+set Paul_ETurkey=$datapath/Paul_etal_ETurkey.csv
+set color_Paul_ETurkey=wheat1
+cat $Paul_ETurkey | awk -F, 'NR>1 {print $3,$2,$4,$5*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Paul_ETurkey
+
+set linear_Iran=$datapath/Sadeghi-Bagherabadi_etal_linearIran.csv
+set color_linear_Iran=cyan2
+cat $linear_Iran | awk -F, 'NR>1 {if ($8 != "Yes")print $11,$10,$6,$7*50,5}' | gmt plot -SJ -W0.05p,black -G$color_linear_Iran
+
+
+
+gmt end show
