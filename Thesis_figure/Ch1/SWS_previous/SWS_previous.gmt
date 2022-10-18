@@ -1,68 +1,104 @@
-#!/bin/csh
-set grd=SKSmap.grd
-set int=SKSmap.int
-set region=30/62/15/45
-set datapath=/Volumes/home/Research/DataBase/02_SKS_splitting
-set SWSdt=2000
-gmt begin SKSmap pdf A+m1c
+#!/bin/zsh
+grd=SKSmap.grd
+int=SKSmap.int
+region=30/62/15/45
+datapath=/Volumes/home/Research/DataBase/02_SKS_splitting
+SWSdt=2000
+
+gmt begin SKSmap pdf,png A+m1c
 gmt set FORMAT_GEO_MAP ddd.x
 gmt set FONT_LABEL 12p,4,black
 gmt set FONT_TITLE 18p,26,black
-
 
 gmt makecpt -Celevation -T0/4000/500 -D -Z 
 gmt basemap -JM7.5i -R$region -Ba4f2 -BWNse -X+2 -Y+3 
 # gmt grdcut @earth_relief_30s -G$grd -R$region
 gmt grdimage $grd -I+d  -t50  -M 
 gmt grdgradient $grd -A0/90 -G$int -Ne0.2
-gmt coast -W1p -Dh -A150  -EAM,TR,IR,GE,RU,IQ,AZ,KZ,UZ,SY,JO+p0.3p,black  -S145/200/255 -t50
-
-
-set NWIran=$datapath/Arvin_etal_NW_Iran.txt
-set color_NWIran=springgreen
-cat $NWIran | awk 'NR>1 {print $3,$4,$5,$6*50,5}' | gmt plot -SJ -W0.05p,black -G$color_NWIran
-
-set NEIran=$datapath/Gao_etal_NEIran.txt
-set color_NEIran=springgreen4
-cat $NEIran | awk 'NR>1 {print $2,$3,$4,$8*50,5}' | gmt plot -SJ -W0.05p,black -G$color_NEIran
-
-set Arabian=$datapath/Qaysi_ArabianPlate/SRL_2018144_esupp_Table_S1.csv
-set color_Arabian=black
-cat $Arabian | awk '{print $5,$4,$6,$8*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Arabian
-
-set Kaviani2021=$datapath/Kaviani_etal_Zargos_2021.csv
-set color_Kaviani2021=skyblue
+gmt coast -W1p -Dh -A150  -EAM,TR,IR,GE,RU,IQ,AZ,KZ,UZ,SY,JO+p0.3p,black,--  -S145/200/255 -t50
+gmt coast -EAM,GE+p1p,black 
+Kaviani2021=$datapath/Kaviani_etal_Zargos_2021.csv
+color_Kaviani2021=skyblue
 cat $Kaviani2021 | awk -F, 'NR>1 {if ($13 != "Null") print $3,$2,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kaviani2021
+#
+NWIran=$datapath/Arvin_etal_NW_Iran.txt
+color_NWIran=springgreen
+cat $NWIran | awk 'NR>1 {print $3,$4,$5,$6*50,5}' | gmt plot -SJ -W0.05p,black -G$color_NWIran
+#
+NEIran=$datapath/Gao_etal_NEIran.txt
+color_NEIran=palegreen
+cat $NEIran | awk 'NR>1 {print $2,$3,$4,$8*50,5}' | gmt plot -SJ -W0.05p,black -G$color_NEIran
+#
+Arabian=$datapath/Qaysi_ArabianPlate/Qaysi_ArabianPlate_average.csv
+color_Arabian=black
+cat $Arabian | awk 'NR>1 {print $3,$2,$4,$6*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Arabian
+#
+EAA=$datapath/Elsheikh2019_average.csv
+color_EAA=gold
+cat $EAA | awk -F, 'NR>1 {print $2,$3,$4,$5*50,5}' | gmt plot -SJ -W0.05p,black -G$color_EAA
+#
+Merry_Turkey=$datapath/Merry_etal_Turkey_2021_average.txt
+color_Merry_Turkey=darkorchid1
+cat $Merry_Turkey | awk 'NR>1 {if ($5 != "0") print $3,$4,$7,$9*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Merry_Turkey
+#
+Lemnifi_Turkey=$datapath/Lemnifi_etal_Turkey_stations_averaged_DB.txt
+color_Lemnifi_Turkey=red
+cat $Lemnifi_Turkey | awk 'NR>1 {print $3,$2,$4,$6*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Lemnifi_Turkey
+#
+Kavianideadsea=$datapath/Kaviani_etal_dead_sea_fault_desert_averaged.csv
+color_Kavianideadsea=orange
+cat $Kavianideadsea | awk -F, 'NR>1 {print $3,$2,$5,$5*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kavianideadsea
+Kavianiisn=$datapath/Kaviani_etal_dead_sea_fault_isn_averaged.csv
+cat $Kavianiisn | awk -F, 'NR>1 {print $3,$2,$4,$5*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kavianideadsea
 
-set Merry_Turkey=$datapath/Merry_etal_Turkey_2021.txt
-set color_Merry_Turkey=darkorchid1
-cat $Merry_Turkey | awk 'NR>1 {print $3,$4,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Merry_Turkey
-
-
-set Lemnifi_Turkey=$datapath/Lemnifi_etal_Turkey_SWS_individual_data_out.txt
-set color_Lemnifi_Turkey=red
-cat $Lemnifi_Turkey | awk 'NR>1 {print $5,$4,$6,$8*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Lemnifi_Turkey
-
-set Kavianideadsea=$datapath/Kaviani_etal_dead_sea_fault_desert.csv
-set color_Kavianideadsea=orange
-cat $Kavianideadsea | awk -F, 'NR>1 {if ($13 != "Null") print $3,$2,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kavianideadsea
-
-set Kavianideadsea_=$datapath/Kaviani_etal_dead_sea_fault_desire.csv
-set color_Kavianideadsea_=lightcoral
-cat $Kavianideadsea_ | awk -F, 'NR>1 {if ($13 != "Null") print $3,$2,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kavianideadsea_
-
-set Kavianiisn=$datapath/Kaviani_etal_dead_sea_fault_isn.csv
-set color_Kavianiisn=pink
-cat $Kavianiisn | awk -F, 'NR>1 {if ($13 != "Null") print $3,$2,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kavianiisn
-
-set Paul_ETurkey=$datapath/Paul_etal_ETurkey.csv
-set color_Paul_ETurkey=wheat1
+Kavianideadsea_=$datapath/Kaviani_etal_dead_sea_fault_desire_averaged.csv
+color_Kavianideadsea_=lightcoral
+cat $Kavianideadsea_ | awk -F, 'NR>1 {print $3,$2,$4,$5*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kavianideadsea_
+#
+Paul_ETurkey=$datapath/Paul_etal_ETurkey.csv
+color_Paul_ETurkey=wheat1
 cat $Paul_ETurkey | awk -F, 'NR>1 {print $3,$2,$4,$5*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Paul_ETurkey
+#
+linear_Iran=$datapath/Sadeghi-Bagherabadi_etal_linearIran_averaged.csv
+color_linear_Iran=blue
+cat $linear_Iran | awk -F, 'NR>1 {print $3,$2,$4,$5*50,5}' | gmt plot -SJ -W0.05p,black -G$color_linear_Iran
+#
+Hansen=$datapath/Hansen2006.csv
+color_Hansen=sienna
+cat $Hansen | awk -F, 'NR>1 {print $2,$3,$4,$5*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Hansen
 
-set linear_Iran=$datapath/Sadeghi-Bagherabadi_etal_linearIran.csv
-set color_linear_Iran=cyan2
-cat $linear_Iran | awk -F, 'NR>1 {if ($8 != "Yes")print $11,$10,$6,$7*50,5}' | gmt plot -SJ -W0.05p,black -G$color_linear_Iran
+gmt plot -Gwhite@30 <<EOF
+52 45
+62 45
+62 38.5
+52 38.5
+52 45
+EOF
 
-
+echo 53 44.5 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_NWIran
+echo 54 44.5 "Arvin et al., (2021)" | gmt text -F+f8p,4,black+jML
+echo 53 44.0 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_NEIran
+echo 54 44.0 "Gao et al., (2021)" | gmt text -F+f8p,4,black+jML
+echo 53 43.5 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_linear_Iran
+echo 54 43.5 "Sadeghi-Bagherabadi et al., (2018)" | gmt text -F+f8p,4,black+jML
+echo 53 43.0 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_Arabian
+echo 54 43.0 "Qaysi et al., (2018)" | gmt text -F+f8p,4,black+jML
+echo 53 42.5 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_Kaviani2021
+echo 54 42.5 "Kaviani et al., (2021)" | gmt text -F+f8p,4,black+jML
+echo 53 42.0 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_Merry_Turkey
+echo 54 42.0 "Merry et al., (2021)" | gmt text -F+f8p,4,black+jML
+echo 53 41.5 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_Lemnifi_Turkey
+echo 54 41.5 "Lemnifi et al., (2017)" | gmt text -F+f8p,4,black+jML
+echo 53 41.0 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_Paul_ETurkey
+echo 54 41.0 "Paul et al., (2014)" | gmt text -F+f8p,4,black+jML
+echo 53 40.5 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_Kavianideadsea
+echo 54 40.5 "Kavian et al., (2011)" | gmt text -F+f8p,4,black+jML
+echo 53 40.0 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_Kavianideadsea_
+echo 54 40.0 "Kavian et al., (2013)" | gmt text -F+f8p,4,black+jML
+echo 53 39.5 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_EAA
+echo 54 39.5 "Elsheikh (2019)" | gmt text -F+f8p,4,black+jML
+echo 53 39.0 90 50 8 | gmt plot -SJ -W0.05p,black -G$color_Hansen
+echo 54 39.0 "Hansen (2006)" | gmt text -F+f8p,4,black+jML
+echo 52.8 38.6 "1s" | gmt text -F+f8p,5,black+jML
 
 gmt end show
