@@ -1,17 +1,18 @@
 #!/bin/zsh
 grd=SKSmap.grd
 int=SKSmap.int
-region=30/62/15/45
+#region=30/62/15/45
+region=40/50/37/45
 datapath=/Volumes/home/Research/DataBase/02_SKS_splitting
 SWSdt=2000
 
-gmt begin SKSmap pdf,png A+m1c
+gmt begin SKSmap_smaller_noKaviani pdf,png A+m1c
 gmt set FORMAT_GEO_MAP ddd.x
 gmt set FONT_LABEL 12p,4,black
 gmt set FONT_TITLE 18p,26,black
 
 gmt makecpt -Celevation -T0/4000/500 -D -Z 
-gmt basemap -JM7.5i -R$region -Ba4f2 -BWNse -X+2 -Y+3 
+gmt basemap -JM7.5i -R$region -Ba2f1 -BWNse -X+2 -Y+3 
 # gmt grdcut @earth_relief_30s -G$grd -R$region
 gmt grdimage $grd -I+d  -t50  -M 
 gmt grdgradient $grd -A0/90 -G$int -Ne0.2
@@ -19,7 +20,7 @@ gmt coast -W1p -Dh -A150  -EAM,TR,IR,GE,RU,IQ,AZ,KZ,UZ,SY,JO+p0.3p,black,--  -S1
 gmt coast -EAM,GE+p1p,black 
 Kaviani2021=$datapath/Kaviani_etal_Zargos_2021.csv
 color_Kaviani2021=skyblue
-cat $Kaviani2021 | awk -F, 'NR>1 {if ($13 != "Null") print $3,$2,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kaviani2021
+# cat $Kaviani2021 | awk -F, 'NR>1 {if ($13 != "Null") print $3,$2,$13,$15*50,5}' | gmt plot -SJ -W0.05p,black -G$color_Kaviani2021
 #
 NWIran=$datapath/Arvin_etal_NW_Iran.txt
 color_NWIran=springgreen

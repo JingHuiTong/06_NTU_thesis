@@ -1,0 +1,2 @@
+> SKS at  1483.22 seconds at   118.50 degrees for a    270.0 km deep source in the iasp91 model with rayParam    3.533 s/deg.
+  118.45    50.0  1469.8     43.96     42.61
