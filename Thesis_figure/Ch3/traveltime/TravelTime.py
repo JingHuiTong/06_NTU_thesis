@@ -9,6 +9,6 @@ ax = plot_travel_times(source_depth=300, phase_list=['PcS','PS','PKS',"SKS",'S',
                        ax=ax, fig=fig, verbose=True, legend=True)
                        
                        
-fig.savefig('TravelTime_300km.png',dpi=200)
-fig.savefig('TravelTime_300km.pdf',dpi=200)
+# fig.savefig('TravelTime_300km.png',dpi=200)
+# fig.savefig('TravelTime_300km.pdf',dpi=200)
 
