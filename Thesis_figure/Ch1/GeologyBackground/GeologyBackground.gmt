@@ -8,7 +8,7 @@ set GPS=GPS_221020.txt
 set fault=/Volumes/home/Research/DataBase/01_Armenia/00_smooth_fault_7.txt
 
 
-gmt begin GeologyMap_nofault_v0 pdf,png A+m1c
+gmt begin GeologyMap_v2 pdf,png A+m1c
 gmt set FORMAT_GEO_MAP ddd.x
 gmt set FONT_LABEL 12p,4,black
 gmt set FONT_TITLE 18p,26,black
@@ -20,11 +20,11 @@ gmt grdgradient $grd -A0/90 -G$int -Ne0.2
 gmt coast -W1p -Dh -A150  -EAM,TR,IR,GE,RU,IQ,AZ,KZ,UZ,SY,JO+p0.5p,black,-- -S145/200/255 -t30 #-Lg44/46+c42+w1000+u
 
 gmt plot PB2002_boundaries.dig.txt -W3p,darkbrown
-# gmt plot $fault -W1p,bisque4
+gmt plot $fault -W1.5p,tan3
 ###Event 
-awk '{if ($6<5) {print $1,$2}}' $event | gmt plot -Sc0.08c -G170 -W0.05p,120
-awk '{if (5<=$6 && $6<6) {print $1,$2}}' $event | gmt plot -Sc0.15c -G130 -W0.05p,120
-awk '{if (6<=$6) {print $1,$2}}' $event | gmt plot -Sa0.3c -Ggold1 -W0.05p,120
+# awk '{if ($6<5) {print $1,$2}}' $event | gmt plot -Sc0.08c -G170 -W0.05p,120
+# awk '{if (5<=$6 && $6<6) {print $1,$2}}' $event | gmt plot -Sc0.15c -G130 -W0.05p,120
+# awk '{if (6<=$6) {print $1,$2}}' $event | gmt plot -Sa0.3c -Ggold1 -W0.05p,120
 
 ###GPS
 set scale=0.08c
@@ -87,16 +87,16 @@ echo 43.5 33.9 Kreemer et al., 2014 | gmt text -F+f8p,5,50+jLM -N
 echo 42 33.5 GPS velocity relative to EU|gmt text  -F+f10p,5,50+jLM -N
 echo 42 33.2 10 0 1 1 0 | gmt psvelo -Se$scale/0.40/4 -A0.4c+p1.0p+e  -Gwhite -W0.3p,black  -t20 -N
 echo 43.5 33.2 '10 \261 1mm/yr' | gmt text -F+f8p,5,50+jLM -N
-##Earthquake
-echo 46 34.5 Earthquakes | gmt text  -F+f10p,5,50+jLM -N
-echo 46 34.1 | gmt plot -Sc0.08c -G160 -W0.05p,120 -N
-echo 46 33.8 | gmt plot -Sc0.1c -G140 -W0.05p,120 -N
-echo 46 33.5 | gmt plot -Sa0.3c -Ggold1 -W0.05p,120 -N
-gmt text -F+f8.5p,5,50+jLM -N <<EOF
-46.5 34.1 4.0 @~\243@~ Mag< 5.0
-46.5 33.8 5.0 @~\243@~ Mag< 6.0
-46.5 33.5 6.0 @~\243@~ Mag
-EOF
+# ##Earthquake
+# echo 46 34.5 Earthquakes | gmt text  -F+f10p,5,50+jLM -N
+# echo 46 34.1 | gmt plot -Sc0.08c -G160 -W0.05p,120 -N
+# echo 46 33.8 | gmt plot -Sc0.1c -G140 -W0.05p,120 -N
+# echo 46 33.5 | gmt plot -Sa0.3c -Ggold1 -W0.05p,120 -N
+# gmt text -F+f8.5p,5,50+jLM -N <<EOF
+# 46.5 34.1 4.0 @~\243@~ Mag< 5.0
+# 46.5 33.8 5.0 @~\243@~ Mag< 6.0
+# 46.5 33.5 6.0 @~\243@~ Mag
+# EOF
 ##Volcano
 echo 49 34.5 Volcanos | gmt text  -F+f10p,5,50+jLM -N
 echo 49.2 34.1 |gmt plot -Skvolcano/0.3 -Gdarkred -W0.5p,black -N
