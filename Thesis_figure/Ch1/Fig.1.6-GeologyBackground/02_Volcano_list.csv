@@ -1,0 +1,25 @@
+VolcanoName,lat,lon,region,age,LastEruption,Plottype,http,Reference
+Aragats,40.53,44.2,Armenia,Holocene,3000 BCE,1,https://volcano.si.edu/volcano.cfm?vn=214060,"Kharakanian et al., 2003"
+Ghegham,40.283,45,Armenia,Holocene,1900 BCE,1,https://volcano.si.edu/volcano.cfm?vn=214070,"Sherriff JE et al.,2019"
+Vaiyots-Sar,39.797,45.497,Armeniam,Holocene,2000 BCE,1,https://volcano.si.edu/volcano.cfm?vn=214080,"Kharakanian et al., 2003"
+Kazbek,42.7,44.5,Georgia,Holocene,750 BCE,1,https://volcano.si.edu/volcano.cfm?vn=214020,Gushchenko (1979)
+Samsari,41.542,43.7,Georgia,Holocene,unknown,1,https://volcano.si.edu/volcano.cfm?vn=214050,
+Nemrut Dagi,38.654,42.229,Turkey,Holocene,1650 CE,1,https://volcano.si.edu/volcano.cfm?vn=213020,https://doi.org/10.1016/j.jvolgeores.2012.06.031
+Ararat,39.7,44.3,Turkey,Holocene,1840 CE,1,https://volcano.si.edu/volcano.cfm?vn=213040,Karakhanian et al. (2002)
+Porak,40.028,45.74,Armenia-Azerbaijan,Pleistocene,778 BCE,1,https://volcano.si.edu/volcano.cfm?vn=214090,"Haroutiunian R A, 2006."
+Tskhouk-Karckar,39.742,45.992,Armenia-Azerbaijan,Holocene,3000 BCE,1,https://volcano.si.edu/volcano.cfm?vn=214100,Karakhanian et al. (2002)
+Elbrus,43.351,42.442,Russia,Holocene,50 CE,1,https://volcano.si.edu/volcano.cfm?vn=214010,"Karakhanian et al., 2002"
+Sabalan,38.268,47.835,Iran,Holocene,unknown,1,https://volcano.si.edu/volcano.cfm?vn=232002,
+Sahand,37.75,46.43,Iran,Pleistocene,unknown,3,https://volcano.si.edu/volcano.cfm?vn=232001,
+Keli Highland,42.45,44.25,Georgia,Pleistocene,,3,fromGoogleEarth,
+Dzau,42.404,44.004,Georgia,Pleistocene,,3,fromGoogleEarth,
+Akhuryan Valley,41.067,43.75,Armenia,Pleistocene,,3,fromGoogleEarth,
+Unnamed,40.058,45.608,Armenia,Pleistocene,,3,fromGoogleEarth,
+Unnamed,39.617,46.1,Armenia,Pleistocene,,3,fromGoogleEarth,
+Arpacay,41,43.467,Turkey,Pleistocene,,3,fromGoogleEarth,
+Kisir Dagi,40.97,43.07,Turkey,Pleistocene,,3,fromGoogleEarth,
+Kargapazari Dagi,40.005,41.675,Turkey,Pleistocene,,3,fromGoogleEarth,
+Tenduruk Dagi,39.356,43.874,Turkey,Holocene,,1,fromGoogleEarth,
+Etrusk,39.032,43.66,Turkey,Pleistocene,,3,fromGoogleEarth,
+Girekol,39.104,43.426,Turkey,Pleistocene,,3,fromGoogleEarth,
+Suphan Dagi,38.931,42.833,Turkey,Pleistocene,,3,fromGoogleEarth,
