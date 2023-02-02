@@ -3,7 +3,7 @@ grd=SKSmap.grd
 int=SKSmap.int
 #region=30/62/15/45 ##larger
 region=40/50/37/45 ##smaller 
-datapath=./../../Sup/Result_CIA_Arbian/02_SKS_splitting
+datapath=./../../Sup/SupH.Result_CIA_Arbian/02_SKS_splitting
 SWSdt=2000
 boundary=0.2p,black ## 0.05p,black
 

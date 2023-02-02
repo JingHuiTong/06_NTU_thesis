@@ -4,7 +4,7 @@ set Plotgrd=LithThickness.nc
 set grd=../GeologyBackground/Armenia.grd
 set int=../GeologyBackground/Armenia.int
 set Region=40/50/38/44.5 #39/50/35/44.5
-# set Volcano=/Volumes/home/Research/DataBase/01_Armenia/02_Volcano_list.csv
+# set Volcano=./../Fig.1.6-GeologyBackground/02_Volcano_list.csv
 
 
 gmt begin LithThickness_v1 png,pdf A+m1c
