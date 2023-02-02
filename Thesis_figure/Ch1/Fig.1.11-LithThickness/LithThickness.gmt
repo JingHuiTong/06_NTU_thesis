@@ -1,0 +1,44 @@
+#!/bin/csh
+set Lithtxt=./04_CAM2016Litho/CAM2016Litho
+set Plotgrd=LithThickness.nc
+set grd=../GeologyBackground/Armenia.grd
+set int=../GeologyBackground/Armenia.int
+set Region=40/50/38/44.5 #39/50/35/44.5
+# set Volcano=/Volumes/home/Research/DataBase/01_Armenia/02_Volcano_list.csv
+
+
+gmt begin LithThickness_v1 png,pdf A+m1c
+gmt set FORMAT_GEO_MAP ddd.x
+gmt set FONT_LABEL 14p,4,black
+gmt set FONT_TITLE 18p,26,black
+
+gmt makecpt -Celevation -T0/4000/500 -D -Z
+gmt basemap -JM7.5i  -R$Region -Ba1f0.5 -BWNse -X+2 -Y+3
+gmt grdgradient $grd -A0/90 -G$int -Ne0.2
+# gmt makecpt -Cturku -I -H -A50 -T40/180/10 -Z > Lith.cpt
+
+awk '{print $2, $1, $3}' $Lithtxt> temp.txt
+gmt blockmean temp.txt -I0.01/0.01 -R$Region > temp_0.01.txt
+gmt surface temp_0.01.txt -I0.01/0.01 -G$Plotgrd -R$Region
+gmt grdmask maskfile.dat -R$Region -I0.01/0.01 -N1/NaN/NaN -A -Gdata_mask.nc=nb
+gmt grdmath $Plotgrd data_mask.nc OR = area_masked.grd
+gmt grdimage area_masked.grd -CLith.cpt -t40
+gmt grdcontour area_masked.grd -L40/180 -C10 -A20+18p+an -Wa1.5p,black -Wc0.5p,black,- -JM7.5i 
+
+gmt coast -W0.5p,50 -Dh -A200  -EAM,TR,IR,GE,RU,AZ+p0.2p,100,-- 
+
+##Volcano
+#cat $Volcano | awk -F, 'NR>1 {if ($7 == "1") print $3,$2}' | gmt plot -Skvolcano/0.45 -Gdarkred -W0.5p,black
+# cat $Volcano | awk -F, 'NR>1 {if ($7 == "2") print $3,$2}' | gmt plot -Skvolcano/0.45 -Gblack -W0.5p,black
+#cat $Volcano | awk -F, 'NR>1 {if ($7 == "3") print $3,$2}' | gmt plot -Skvolcano/0.45 -Gblack -W0.5p,black
+
+gmt plot -Gwhite <<EOF
+45 44.5
+50 44.5
+50 43.5
+45 43.5
+45 44.5
+EOF
+gmt colorbar -CLith.cpt -t40 -Dx14.2c/15.5c+w5c/0.3c+jTC+h -Bxa20f10+l"Lithospheric Thickness (km)"
+gmt end show
+rm -f *txt

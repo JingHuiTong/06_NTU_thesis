@@ -1,0 +1,21 @@
+#!/bin/csh
+set grd=../GeologyBackground/Armenia.grd
+set int=../GeologyBackground/Armenia.int
+set region=40/49.5/38/44.5
+
+
+gmt begin ConturyName_v2 pdf,png A+m1c
+gmt set FORMAT_GEO_MAP ddd.x
+gmt set FONT_LABEL 12p,4,black
+gmt set FONT_TITLE 18p,26,black
+
+gmt makecpt -Celevation -T0/4000/500 -D -Z
+gmt basemap -JM7.5i  -R$region -Ba2f1 -BWNse -X+2 -Y+4
+gmt grdimage $grd -I+d  -t40
+gmt grdgradient $grd -A0/90 -G$int -Ne0.2
+gmt coast -W1p -Dh -A150  -EAM,TR,IR,GE,RU,IQ,AZ,KZ,UZ,SY,JO+p0.5p,black,-- -S145/200/255 -t30 #-Lg44/46+c42+w1000+u
+
+
+gmt colorbar -C -Dx0.2/-0.05+w8c/0.25c+o0c/-1c+mc+jBL+h -Bxa1000f500 -By+l"Elevation (m)"
+
+gmt end show
