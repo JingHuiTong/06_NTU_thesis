@@ -1,0 +1,18 @@
+Global azimuthal anisotropy model for SV waves (Yuan and Beghein, EPSL, 2013).
+Model is stored in General Spherical Harmonics (GSH) up to degree 20.
+
+The FORTRAN code "gsh2xyz_2psi.f" does the conversion from GSH to geographical coordinates. For usage and details, see comments in the code.
+
+The model format is as follows:
+lon lat dlnG fast-axis-direction(w.r.t. North) dlnGc dlnGs
+
+
+dlnG = G/L where L is the elastic parameter associated with Vsv
+dlnGc and dlnGs are derived from inversion of the cos and sin terms of the phase velocity maps of Visser et al. (2008). 
+
+Reference: Yuan, K., and Beghein, C., Seismic anisotropy changes across upper mantle phase transitions, Earth and Planet. Sci. Lett., 374, 132-144, doi: 10.1016/j.epsl.2013.05.031, 2013
+
+
+
+- K. Yuan, kqyuan@ucla.edu, Jan. 4th, 2014
+  C. Beghein (cbeghein@alumni.ulg.ac.be)
